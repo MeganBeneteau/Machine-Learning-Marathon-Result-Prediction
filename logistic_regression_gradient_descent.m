@@ -3,7 +3,7 @@
 %X = data(:, 1:m); %input data, n x m, features
 %Y = data(:, m+1); % output data, n x 1, 1=yes attended 2015 marathon, 0=no
 
-%%%%%%%%%%%%%%%%%%%%%%INITIALIZE ARRAYS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%INITIALIZE ARRAYS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 m = 3; %number of features
 n = 100;%number of examples
 d = rand(n,m+1);
