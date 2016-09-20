@@ -1,0 +1,25 @@
+%%%%%%%%%%%%DATA LOADING%%%%%%%%%
+data = load('MontrealMarathon.txt');
+m = 3; %number of features
+n = 100;%number of participants
+X = data(:, 1:m); %input data, n x m, features
+Y = data(:, m+1); % output data, n x 1, 1=yes attended 2015 marathon, 0=no
+
+%%%%% K-FOLD CROSS VALIDATION %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+k = 5;
+subsets = n / k;
+
+TrainX = [];
+TestX = [];
+for i = 1:numFolds:n
+    testRows = i:i+subsets-1;
+    if (i == 1)
+        trainRows = max(testRows)+1:n;
+        else
+        trainRows = [1:startOfRow-1 max(testRows)+1:dataRowNumber];
+    end
+    crossValidationTrainData = [crossValidationTrainData ; SortedData(trainRows ,:)];
+    crossValidationTestData = [crossValidationTestData ;SortedData(testRows ,:)];
+
+end
