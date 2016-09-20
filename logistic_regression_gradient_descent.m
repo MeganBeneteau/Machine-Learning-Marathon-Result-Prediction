@@ -3,20 +3,17 @@
 %X = data(:, 1:m); %input data, n x m, features
 %Y = data(:, m+1); % output data, n x 1, 1=yes attended 2015 marathon, 0=no
 
-%%%%%%%%%%%%%%%%%%%%%%INITIALIZE ARRAYS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%INITIALIZE ARRAYS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 m = 3; %number of features
 n = 100;%number of examples
 d = rand(n,m+1);
-disp(d);
 X = d(:, 1:m); %input data, n x m, features
-disp(X);
 Y = d(:, m+1); % output data, n x 1, 1=yes attended 2015 marathon, 0=no
-disp(Y);
 W = rand(m,1); %initialize Weights array
 
 %%%%%%%%%%%%%%%%%%%% Gradient Descent %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-alpha = .002; %??????
-iters = 1000;
+alpha = .005; %??????
+iters = 500;
 
 for k=1: iters
    lf = zeros(m,1);
