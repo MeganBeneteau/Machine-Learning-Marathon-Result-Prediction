@@ -23,6 +23,6 @@ for k=1:n %loop through participants
     end
 end
 
-predError= match/n;
+predError= 1 - (match/n);
 disp(predError);%percent of matches
 
