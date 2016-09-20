@@ -1,25 +1,24 @@
-%%%%%%%%%%%%DATA LOADING%%%%%%%%%
-data = load('MontrealMarathon.txt');
-m = 3; %number of features
-n = 100;%number of participants
-X = data(:, 1:m); %input data, n x m, features
-Y = data(:, m+1); % output data, n x 1, 1=yes attended 2015 marathon, 0=no
+%%%%%%%%%%%%DATA LOADING%%%%%%%%%%%%
+%data = load('MontrealMarathon.txt');
+X = data(:, :); %all the data
+[n, numColumns] = size(A); %n = number of participants
+m = numColumn - 1; %umber of features
 
-%%%%% K-FOLD CROSS VALIDATION %%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-k = 5;
-subsets = n / k;
+k = 5; %num of folds
+foldSize = numParticipants/k; %size of folds
+foldId = kron( 1:k, ones(1,foldSize) );
 
-TrainX = [];
-TestX = [];
-for i = 1:numFolds:n
-    testRows = i:i+subsets-1;
-    if (i == 1)
-        trainRows = max(testRows)+1:n;
-        else
-        trainRows = [1:startOfRow-1 max(testRows)+1:dataRowNumber];
-    end
-    crossValidationTrainData = [crossValidationTrainData ; SortedData(trainRows ,:)];
-    crossValidationTestData = [crossValidationTestData ;SortedData(testRows ,:)];
-
+for i = 1 : k
+    %%% form train and test data %%%%
+    trainIdx = find( foldId == i );
+    testIdx  = find( foldId ~= i );
+    trainX = X(trainIdx, :);
+    testX = X(testIdx, :); 
+    
+    w = log_reg(trainX); %% get weights from trainX
 end
+
+
+
+
+
