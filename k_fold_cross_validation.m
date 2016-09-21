@@ -1,6 +1,6 @@
 %%%%%%%%%%%%DATA LOADING%%%%%%%%%%%%
-data = load('MontrealMarathon.txt');
-Data = data(:, :); %all the data
+data = load('finalData.csv');
+Data = data(2:end, 2:end); %all the data
 [n, numColumns] = size(A); %n = number of participants
 m = numColumn - 1; %nmumber of features
 
