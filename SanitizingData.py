@@ -1,19 +1,45 @@
-def incrementYearAndTime (entry, date, raceLength):
+import re 
+import datetime
+def getTimeInSeconds(time):
+	if len(time) == 8:
+		h,m,s = re.split(':',time)
+		timeInSeconds = int(datetime.timedelta(hours=int(h),minutes=int(m),seconds=int(s)).total_seconds())
+	else:
+		timeInSeconds = 0
+	return timeInSeconds
+
+def incrementYearAndTime (entry, date, raceLength,time):
 	date = date[0:4]
 	date = int(date)
 	if date == 2015 and raceLength == 42:
 		entry[1] = entry[1] + 1
 		entry[9] = 1
+		timeInSeconds = getTimeInSeconds(time)
+		entry[10] = entry[10] + timeInSeconds #add the total, compute average later
 	elif date == 2014:
 		if raceLength == 42:
-			entry[5] = entry[5] +1
-			entry[1] = entry[1] +1
+			timeInSeconds = getTimeInSeconds(time)
+			if timeInSeconds != 0:
+				entry[5] = entry[5] +1
+				entry[1] = entry[1] +1
+				entry[11] = entry[11]+timeInSeconds
 		elif raceLength == 21:
-			entry[6] = entry[6] +1
+			timeInSeconds = getTimeInSeconds(time)
+			if timeInSeconds != 0:
+				entry[6] = entry[6] +1
+				entry[12] = entry[12]+timeInSeconds
 		elif raceLength == 10:
-			entry[7] = entry[7] +1
+			timeInSeconds = getTimeInSeconds(time)
+			if timeInSeconds != 0:
+				entry[7] = entry[7] +1
+				timeInSeconds = getTimeInSeconds(time)
+				entry[13] = entry[13]+timeInSeconds
 		elif raceLength == 5:
-			entry[8] == entry[8] +1
+			timeInSeconds = getTimeInSeconds(time)
+			if timeInSeconds !=0:
+				entry[8] = entry[8] +1
+				timeInSeconds = getTimeInSeconds(time)
+				entry[14] = entry[14]+timeInSeconds
 	return entry
 
 def computeAverages(entry):
@@ -22,6 +48,14 @@ def computeAverages(entry):
 	if average !=0:
 		average = average/(entry[5]+entry[6]+entry[7]+entry[8])
 	entry[3] = average
+	if entry[5] != 0:
+		entry[11]=entry[11]/entry[5]
+	if entry[6] != 0:
+		entry[12]= entry[12]/entry[6]
+	if entry[7] != 0:
+		entry[13]=entry[13]/entry[7]
+	if entry[8] != 0: 
+		entry[14]=entry[14]/entry[8]
 	return entry
 import csv
 #x=[] This will be the result
@@ -62,6 +96,7 @@ numberOf5k=0;
 numberOf10k=0;
 numberOfMarathon=0;
 numberOfHalfMarathon=0;
+categories = []
 with open('Project1_data.csv', 'rb') as csvfile:
 	dialect = csv.Sniffer().sniff(csvfile.read(1024))
 
@@ -69,44 +104,48 @@ with open('Project1_data.csv', 'rb') as csvfile:
 	reader = csv.reader(csvfile, dialect)
 	#print csv.reader.dialect
 	for row in reader:
-		entry = [None,0,None,0,0,0,0,0,0,0]
+		entry = [None,0,None,0,0,0,0,0,0,0,0,0,0,0,0]
 		columns=len(row)
 		currentRaceEvaluated=3
+		currentTimeEvaluated = 4
 		currentGenderEvaluated=5
 		numberMarathonsRun=0
 		currentDateEvaluated=1
 		entry[0]=row[0] #copy identity
-		
+
 		while (columns > currentRaceEvaluated):
 
 			if row[currentRaceEvaluated] in tenKmNames:
 				numberOf10k=numberOf10k+1
-				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 10)
+				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 10, row[currentTimeEvaluated])
 		
 			elif row[currentRaceEvaluated] in fiveKmNames:
 				numberOf5k=numberOf5k+1;
-				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 5)
+				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 5,row[currentTimeEvaluated])
 				#row[currentEvaluated] = 5
 
 			elif row[currentRaceEvaluated] in marathonNames:
 				numberOfMarathon=numberOfMarathon+1
 				#row [currentEvaluated] = 42 #insert 42 km as amount run
 				numberMarathonsRun = numberMarathonsRun +1;
-				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 42)
+				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 42,row[currentTimeEvaluated])
 		
 			elif row[currentRaceEvaluated] in hafMarathonNames:
 				numberOfHalfMarathon=numberOfHalfMarathon+1;
-				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 21)
+				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 21,row[currentTimeEvaluated])
 				#row [currentRaceEvaluated] = 21	
 		
 			elif row[currentRaceEvaluated] not in eventNames: #2 is the race name, 3 is the length
 				eventNames.append(row[currentRaceEvaluated]) #track which have been left out
 			currentRaceEvaluated = currentRaceEvaluated + 5
 			currentDateEvaluated = currentDateEvaluated + 5
+			currentTimeEvaluated = currentTimeEvaluated + 5
 
 		if columns -1 >= currentGenderEvaluated and len(row[currentGenderEvaluated])>0:
 			category = row[currentGenderEvaluated]
 			gender = category[0]
+			ageLength = len(category)
+			ageGroup = category[1:ageLength]
 			if gender not in ('F','m','M','f','H'):
 				otherCategories.append(category)
 				entry[2] = -1
@@ -115,9 +154,12 @@ with open('Project1_data.csv', 'rb') as csvfile:
 					entry[2] = 1
 				else:
 					entry[2] = 0
+			if ageGroup not in categories:
+				categories.append(ageGroup)
 		entry = computeAverages(entry)
 		result.append(entry)
-
+print categories
+print len(categories)
 with open('finalData.csv', 'wb') as csvfile:
     writer = csv.writer(csvfile, delimiter=',',
                              quoting=csv.QUOTE_MINIMAL)
