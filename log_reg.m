@@ -6,7 +6,7 @@ Y = train(:, m+1); % output data, n x 1, 1=yes attended 2015 marathon, 0=no
 W = rand(m,1); %initialize Weights array
 
 %%%%%%%%%%%%%%%%%%%% Gradient Descent %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-alpha = .005; %??????
+alpha = .05; %??????
 iters = 500;
 
 n = size(train,1); %number of participants in trainX
