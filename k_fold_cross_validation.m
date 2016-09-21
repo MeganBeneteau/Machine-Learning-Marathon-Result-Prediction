@@ -1,5 +1,5 @@
 %%%%%%%%%%%%DATA LOADING%%%%%%%%%%%%
-data = load('lis_ata.csv');
+data = load('lis_data.csv');
 m = 8; %num of features
 n = 8711; %num of participants
 Data = data(2:end, 2:10); %all the data
