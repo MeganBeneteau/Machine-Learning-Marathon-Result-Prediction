@@ -17,17 +17,11 @@ end
 
 %%%%%%%% Compare Results with Real Results %%%%%%%%%
 match = 0; %number of times it's a match
-running = 0; %percent running
 for k=1:n %loop through participants
     if results(k) == Y(k)
         match = match+1; %how many are matches
     end
-    if results(k) == 1
-        running = running + 1;
-    end
 end
 
-disp(running/n);
-
-predError= 1 - (match/n);
+predError=(1-(match/n));
 

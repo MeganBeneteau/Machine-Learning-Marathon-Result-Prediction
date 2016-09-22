@@ -1,5 +1,5 @@
 %%%%%%%%%%%%DATA LOADING%%%%%%%%%%%%
-data = load('lis_data.csv');
+data = load('trainingData.csv');
 m = 8; %num of features
 n = 8711; %num of participants
 Data = data(2:end, 2:10); %Y1 data
@@ -11,5 +11,7 @@ test = Data(6001:8711, :);
 w = log_reg(train,m); %% get weights from trainX
  
 predError = predictionError(w, test,m); %% find prediction error for iteration
+
+disp(predError);
 
 disp(w);
