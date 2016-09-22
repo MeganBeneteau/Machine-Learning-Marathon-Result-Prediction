@@ -16,11 +16,10 @@ for i = 1 : k
     test = Data(testId, :); 
     
     w = log_reg(train,m); %% get weights from trainX
-    
-    disp(w);
  
     predError = predictionError(w, test,m); %% find prediction error for iteration
     disp(predError);
+    disp(w);
 end
 
 
