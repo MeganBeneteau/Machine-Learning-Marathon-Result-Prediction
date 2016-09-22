@@ -160,7 +160,7 @@ with open('ActualData.csv', 'rb') as csvfile:
 		result.append(entry)
 print categories
 print len(categories)
-with open('trainingData.csv', 'wb') as csvfile:
+with open('realData.csv', 'wb') as csvfile:
     writer = csv.writer(csvfile, delimiter=',',
                              quoting=csv.QUOTE_MINIMAL)
     for dataEntry in result:
