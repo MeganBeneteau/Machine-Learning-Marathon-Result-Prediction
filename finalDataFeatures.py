@@ -13,16 +13,17 @@ def incrementYearAndTime (entry, date, raceLength,time):
 	date = int(date)
 	if raceLength == 42:
 		entry[1] = entry[1] + 1
-		entry[9] = 1
-		timeInSeconds = getTimeInSeconds(time)
-		entry[10] = entry[10] + timeInSeconds #add the total, compute average later
-	elif date == 2015:
+	
+		
+	if date == 2015:
 		if raceLength == 42:
 			timeInSeconds = getTimeInSeconds(time)
 			if timeInSeconds != 0:
+				entry[9] = 1
 				entry[5] = entry[5] +1
-				entry[1] = entry[1] +1
 				entry[11] = entry[11]+timeInSeconds
+				timeInSeconds = getTimeInSeconds(time)
+				entry[10] = entry[10] + timeInSeconds #add the total, compute average later
 		elif raceLength == 21:
 			timeInSeconds = getTimeInSeconds(time)
 			if timeInSeconds != 0:
