@@ -1,8 +1,10 @@
 with open('trainingData', 'rb') as csvfile:
+	pRan =0 
+	pNotRan =0
 	pRanMale=0
 	pRanWoman=0
 	pNotRanMale=0
-	pNotRamWoman=0
+	pNotRanWoman=0
 	pRanHadMarathonExperience=0
 	pRanHadNoMarathonExperience=0
 	pNotRanHadMarathonExperience=0
@@ -21,6 +23,22 @@ with open('trainingData', 'rb') as csvfile:
 	reader = csv.reader(csvfile, dialect)
 	for row in reader:
 		if row[9] == 1:
+			pRan=pRan+1
+			if row[2] = 0:
+				pRanWoman =pRanWoman +1
+			else:
+				pRanMale = pRanMale +1
 			if row[1] >0
-				
-		else:  
+ 				pRanHadMarathonExperience = pRanHadMarathonExperience +1
+			else:
+				pRanHadNoMarathonExperience = pRanHadNoMarathonExperience +1
+		else:
+			pNotRan=pNotRan+1
+			if row[2] = 0:
+				pNotRanWoman =pNotRanWoman +1
+			else:
+				pNotRanMale = pNotRanMale +1
+			if row[1] >0
+				pNotRanHadMarathonExperience = pNotRanHadMarathonExperience +1
+			else:
+				pNotRanHadNoMarathonExperience = pNotRanHadNoMarathonExperience +1
