@@ -18,5 +18,28 @@ for k=1: iters
    W = W - (1.0/(k+1)) * lf;
 end
 
+%%% find error on train%%%
+%%%%%%%%% Find testX Results%%%%%%%%%%%%%%%%%%%%%%%%
+results = zeros(n, 1); %hold resuls
+for c = 1:n
+   temp = logistic_function(X(c,:) * W);
+   if temp > 0.5
+       results(c) = 1;
+   else
+       results(c) = 0;
+   end
+end
+
+match = 0; %number of times it's a match
+for k=1:n %loop through participants
+    if results(k) == Y(k)
+        match = match+1; %how many are matches
+    end
+end
+
+TrainError=(1-(match/n));
+
+disp('Train Error');
+disp(TrainError);
 end
 
