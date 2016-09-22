@@ -107,7 +107,7 @@ with open('Project1_data.csv', 'rb') as csvfile:
 	reader = csv.reader(csvfile, dialect)
 	#print csv.reader.dialect
 	for row in reader:
-		entry = [None,0,None,0,0,0,0,0,0,0,0,0,0,0,0]
+		entry = [None,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		columns=len(row)
 		currentRaceEvaluated=3
 		currentTimeEvaluated = 4
@@ -166,9 +166,9 @@ with open('Project1_data.csv', 'rb') as csvfile:
 				entry[2] = -1
 			else:
 				if gender in ('H','M','m'): #men so 1
-					entry[2] = 1
+					entry[2] = 2
 				else:
-					entry[2] = 0
+					entry[2] = 1.5
 			if ageGroup not in categories:
 				categories.append(ageGroup)
 		entry = computeAverages(entry)
