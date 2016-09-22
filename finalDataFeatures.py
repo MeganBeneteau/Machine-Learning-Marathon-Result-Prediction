@@ -11,12 +11,12 @@ def getTimeInSeconds(time):
 def incrementYearAndTime (entry, date, raceLength,time):
 	date = date[0:4]
 	date = int(date)
-	if date != 2015 and raceLength == 42:
+	if raceLength == 42:
 		entry[1] = entry[1] + 1
 		entry[9] = 1
 		timeInSeconds = getTimeInSeconds(time)
 		entry[10] = entry[10] + timeInSeconds #add the total, compute average later
-	elif date == 2014:
+	elif date == 2015:
 		if raceLength == 42:
 			timeInSeconds = getTimeInSeconds(time)
 			if timeInSeconds != 0:
@@ -97,7 +97,7 @@ numberOf10k=0;
 numberOfMarathon=0;
 numberOfHalfMarathon=0;
 categories = []
-with open('Project1_data.csv', 'rb') as csvfile:
+with open('ActualData.csv', 'rb') as csvfile:
 	dialect = csv.Sniffer().sniff(csvfile.read(1024))
 
 	csvfile.seek(0)
