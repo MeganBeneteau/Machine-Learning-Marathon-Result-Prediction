@@ -97,7 +97,7 @@ numberOf10k=0;
 numberOfMarathon=0;
 numberOfHalfMarathon=0;
 categories = []
-with open('ActualData.csv', 'rb') as csvfile:
+with open('Project1_data.csv', 'rb') as csvfile:
 	dialect = csv.Sniffer().sniff(csvfile.read(1024))
 
 	csvfile.seek(0)
@@ -167,10 +167,3 @@ with open('realData.csv', 'wb') as csvfile:
     	writer.writerow(dataEntry)
 count = 0
 count2 =0
-for dataEntry in result:
-		if dataEntry[9] ==1:
-			count = count +1
-		else:
-			count2 = count2 +1
-print count
-print count2
