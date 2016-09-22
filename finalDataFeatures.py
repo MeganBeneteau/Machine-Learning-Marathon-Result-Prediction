@@ -11,7 +11,7 @@ def getTimeInSeconds(time):
 def incrementYearAndTime (entry, date, raceLength,time):
 	date = date[0:4]
 	date = int(date)
-	if raceLength == 42:
+	if raceLength == 42 and date != 2012:
 		entry[1] = entry[1] + 1
 	
 		
