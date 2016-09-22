@@ -17,17 +17,14 @@ def incrementYearAndTime (entry, date, raceLength,time):
 			entry[10] = entry[10] + timeInSeconds #add the total, compute average later
 	if date != 2015 and raceLength == 42:
 		entry[1] = entry[1] + 1
-		
-	elif date == 2014:
-		print entry[0]
-		print date
-		print time
-		print raceLength
+	
+	
+	if date == 2014:
+
 		if raceLength == 42:
 			timeInSeconds = getTimeInSeconds(time)
 			if timeInSeconds != 0:
 				entry[5] = entry[5] +1
-				entry[1] = entry[1] +1
 				entry[11] = entry[11]+timeInSeconds
 		elif raceLength == 21:
 			timeInSeconds = getTimeInSeconds(time)
@@ -118,15 +115,15 @@ with open('Project1_data.csv', 'rb') as csvfile:
 		numberMarathonsRun=0
 		currentDateEvaluated=1
 		entry[0]=row[0] #copy identity
-
+	
 		while (columns > currentRaceEvaluated):
+			if entry[0]=='1096':
+				print "HIT"
 
 			if row[currentRaceEvaluated] in tenKmNames:
-				numberOf10k=numberOf10k+1
 				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 10, row[currentTimeEvaluated])
 		
 			elif row[currentRaceEvaluated] in fiveKmNames:
-				numberOf5k=numberOf5k+1;
 				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 5,row[currentTimeEvaluated])
 				#row[currentEvaluated] = 5
 
@@ -134,12 +131,24 @@ with open('Project1_data.csv', 'rb') as csvfile:
 				numberOfMarathon=numberOfMarathon+1
 				#row [currentEvaluated] = 42 #insert 42 km as amount run
 				numberMarathonsRun = numberMarathonsRun +1;
+				if entry[0]=='1096':
+					print"Marathon!!"
+					print entry
+					print row[currentDateEvaluated]
+					print row[currentTimeEvaluated]
 				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 42,row[currentTimeEvaluated])
-		
+				if entry[0]=='1096':
+					print entry
+
 			elif row[currentRaceEvaluated] in hafMarathonNames:
-				numberOfHalfMarathon=numberOfHalfMarathon+1;
+				if entry[0]==1096:
+					print entry
+					print row[currentDateEvaluated]
+					print row[currentTimeEvaluated]
 				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 21,row[currentTimeEvaluated])
 				#row [currentRaceEvaluated] = 21	
+				if entry[0]==1096:
+					print entry
 		
 			elif row[currentRaceEvaluated] not in eventNames: #2 is the race name, 3 is the length
 				eventNames.append(row[currentRaceEvaluated]) #track which have been left out
@@ -164,8 +173,7 @@ with open('Project1_data.csv', 'rb') as csvfile:
 				categories.append(ageGroup)
 		entry = computeAverages(entry)
 		result.append(entry)
-print categories
-print len(categories)
+
 with open('trainingData.csv', 'wb') as csvfile:
     writer = csv.writer(csvfile, delimiter=',',
                              quoting=csv.QUOTE_MINIMAL)
@@ -178,5 +186,4 @@ for dataEntry in result:
 			count = count +1
 		else:
 			count2 = count2 +1
-print count
-print count2
+
