@@ -6,10 +6,12 @@ n = size(test,1); %number of participants in testX
 
 %%%%%%%%% Find testX Results%%%%%%%%%%%%%%%%%%%%%%%%
 results = zeros(n, 1); %hold resuls
+numrunning = 0;
 for c = 1:n
    temp = logistic_function(X(c,:) * W);
    if temp > 0.5
        results(c) = 1;
+       numrunning = numrunning + 1;
    else
        results(c) = 0;
    end

@@ -19,7 +19,7 @@ for k=1: iters
 end
 
 %%% find error on train%%%
-%%%%%%%%% Find testX Results%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% X Results%%%%%%%%%%%%%%%%%%%%%%%%
 results = zeros(n, 1); %hold resuls
 for c = 1:n
    temp = logistic_function(X(c,:) * W);
