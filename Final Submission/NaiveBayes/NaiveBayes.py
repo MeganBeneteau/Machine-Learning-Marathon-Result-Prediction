@@ -135,20 +135,12 @@ with open('trainingData.csv', 'rb') as csvfile:
 			correct = correct+1
 		results.append(result)
 		count = count +1
-finalDataResults=[]
-with open('Predictions.csv', 'rb') as csvfile:
 
-	dialect = csv.Sniffer().sniff(csvfile.read(1024))
-	csvfile.seek(0)
-	reader = csv.reader(csvfile, dialect)
-	for row in reader:
-		finalDataResults.append(row)
 with open('prediction.csv', 'wb') as csvfile: #WRITE RESULTS TO CSV
     writer = csv.writer(csvfile, delimiter=',',
                              quoting=csv.QUOTE_MINIMAL)
     count = 0
     for row in results:
-    	entry=[None,None,None]
     	if count !=0: #don't write first row
     		writer.writerow(row)
     	count = count +1

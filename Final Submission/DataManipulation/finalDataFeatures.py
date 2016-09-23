@@ -1,69 +1,90 @@
 import re 
 import datetime
-def getTimeInSeconds(time):
+import csv
+
+def getTimeInSeconds(time):#method takes in time in original format and returns it in seconds
 	if len(time) == 8:
 		h,m,s = re.split(':',time)
 		timeInSeconds = int(datetime.timedelta(hours=int(h),minutes=int(m),seconds=int(s)).total_seconds())
-	else:
+	else: #if time isn't properly formatted then it's not inluded
 		timeInSeconds = 0
 	return timeInSeconds
 
 def incrementYearAndTime (entry, date, raceLength,time):
 	date = date[0:4]
-	date = int(date)
-	if raceLength == 42 and date != 2012:
+	date = int(date)#year only
+
+	if raceLength == 42 and date != 2012: #include only 3 years into marathon count
 		entry[1] = entry[1] + 1
-	
 		
-	if date == 2015:
-		if raceLength == 42:
+	if date == 2015: #getting last years data, same as in other file but with 2015 instead
+
+		if raceLength == 42: #if Marathon
 			timeInSeconds = getTimeInSeconds(time)
-			if timeInSeconds != 0:
-				entry[9] = 1
+			
+			if timeInSeconds != 0: #if they finished, otherwise it doesn't count, true everywhere
+				entry[9] = 1 #they ran a marathon in 2015
 				entry[5] = entry[5] +1
 				entry[11] = entry[11]+timeInSeconds
 				timeInSeconds = getTimeInSeconds(time)
 				entry[10] = entry[10] + timeInSeconds #add the total, compute average later
+		
 		elif raceLength == 21:
 			timeInSeconds = getTimeInSeconds(time)
+		
 			if timeInSeconds != 0:
 				entry[6] = entry[6] +1
 				entry[12] = entry[12]+timeInSeconds
+		
 		elif raceLength == 10:
 			timeInSeconds = getTimeInSeconds(time)
+		
 			if timeInSeconds != 0:
 				entry[7] = entry[7] +1
 				timeInSeconds = getTimeInSeconds(time)
 				entry[13] = entry[13]+timeInSeconds
+		
 		elif raceLength == 5:
 			timeInSeconds = getTimeInSeconds(time)
+		
 			if timeInSeconds !=0:
 				entry[8] = entry[8] +1
 				timeInSeconds = getTimeInSeconds(time)
 				entry[14] = entry[14]+timeInSeconds
 	return entry
 
-def computeAverages(entry):
+def computeAverages(entry):#This method computes the averages in all of the features that are averages
 	average =0;
 	average = (42*entry[5])+(21*entry[6])+(10*entry[7])+(5*entry[8])
+	
 	if average !=0:
 		average = average/(entry[5]+entry[6]+entry[7]+entry[8])
 	entry[3] = average
+	
 	if entry[5] != 0:
 		entry[11]=entry[11]/entry[5]
+	
 	if entry[6] != 0:
 		entry[12]= entry[12]/entry[6]
+	
 	if entry[7] != 0:
 		entry[13]=entry[13]/entry[7]
+	
 	if entry[8] != 0: 
 		entry[14]=entry[14]/entry[8]
+	
 	return entry
-import csv
-#x=[] This will be the result
+
+# MAIN PART STARTS HERE
+
 eventNames=[];
 resultingData = [];
 otherCategories = [];
 result = [];
+otherCategories=[]
+##These four lists below are all the names that were used to describe that length race in the data
+#This was extracted from the original data manually 
+#Exact same names as used in training data
 fiveKmNames=['5 KM', '5 km', '5 km Course/Marche', '5km Sports Experts','5 km Pneu Patry', '5 km Sports Experts', '5km Course'
 ,'Ottawa 5K', '5 Km', '5km Course et Marche','5 km - Course', '5K', '5 KM FAMILIPRIX', '5K Course','5 KM Marche'
 ,'5 km course','5 km Run-Walk', '5 km (Course)', '5 km Course', 'HTG Sports 5K', '5km Run/Walk', '5 Km- Physio Sante',
@@ -92,18 +113,16 @@ hafMarathonNames=['Ottawa Half Marathon','Demi-Marathon','Half Marathon','Demi M
  'Vittoria Trattoria Half Marathon','The Canadian Evening Half-Marathon','Demi-marathon Podiatre Elizabeth','Demi Marathon Marche',
  'Auto Value Hyundai Half-Marathon Run','Demi-Marathon du crepuscule - 21 km (19.5 km)','RE/MAX Qunite Half Marathon' ,'Nutrience Half Marathon',
  'Demi Marathon 21.1km','DEMI-MARATHON 21.1 KM','Siskinds Half Marathon Run','Nutrience Half Marathon Run'];
-numberOf5k=0;
 
-numberOf10k=0;
-numberOfMarathon=0;
-numberOfHalfMarathon=0;
 categories = []
 with open('Project1_data.csv', 'rb') as csvfile:
 	dialect = csv.Sniffer().sniff(csvfile.read(1024))
 
 	csvfile.seek(0)
 	reader = csv.reader(csvfile, dialect)
-	#print csv.reader.dialect
+#entry[id, number of marathons, gender,average race distance, age, #42k 2015, #21k 2015, #10k 2015, #5k 2015, ran in 2015,
+#2015 marathon time, 2015 42km time, 2015 21km time,2015 10km time,2015 5km time]
+
 	for row in reader:
 		entry = [None,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 		columns=len(row)
@@ -114,57 +133,54 @@ with open('Project1_data.csv', 'rb') as csvfile:
 		currentDateEvaluated=1
 		entry[0]=row[0] #copy identity
 
-		while (columns > currentRaceEvaluated):
+		while (columns > currentRaceEvaluated): #while person stil has races to evaluate
 
 			if row[currentRaceEvaluated] in tenKmNames:
-				numberOf10k=numberOf10k+1
 				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 10, row[currentTimeEvaluated])
 		
 			elif row[currentRaceEvaluated] in fiveKmNames:
-				numberOf5k=numberOf5k+1;
 				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 5,row[currentTimeEvaluated])
 				#row[currentEvaluated] = 5
 
 			elif row[currentRaceEvaluated] in marathonNames:
-				numberOfMarathon=numberOfMarathon+1
-				#row [currentEvaluated] = 42 #insert 42 km as amount run
-				numberMarathonsRun = numberMarathonsRun +1;
 				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 42,row[currentTimeEvaluated])
 		
 			elif row[currentRaceEvaluated] in hafMarathonNames:
-				numberOfHalfMarathon=numberOfHalfMarathon+1;
 				entry = incrementYearAndTime(entry, row[currentDateEvaluated], 21,row[currentTimeEvaluated])
 				#row [currentRaceEvaluated] = 21	
 		
 			elif row[currentRaceEvaluated] not in eventNames: #2 is the race name, 3 is the length
 				eventNames.append(row[currentRaceEvaluated]) #track which have been left out
-			currentRaceEvaluated = currentRaceEvaluated + 5
+			currentRaceEvaluated = currentRaceEvaluated + 5 #each race is 5 data points
 			currentDateEvaluated = currentDateEvaluated + 5
 			currentTimeEvaluated = currentTimeEvaluated + 5
 
-		if columns -1 >= currentGenderEvaluated and len(row[currentGenderEvaluated])>0:
+		if columns -1 >= currentGenderEvaluated and len(row[currentGenderEvaluated])>0: #get gender IF information is available
 			category = row[currentGenderEvaluated]
 			gender = category[0]
 			ageLength = len(category)
 			ageGroup = category[1:ageLength]
+			
 			if gender not in ('F','m','M','f','H'):
 				otherCategories.append(category)
 				entry[2] = -1
+			
 			else:
+			
 				if gender in ('H','M','m'): #men so 1
 					entry[2] = 2
+			
 				else:
 					entry[2] = 1.5
+			
 			if ageGroup not in categories:
-				categories.append(ageGroup)
+				categories.append(ageGroup) #track which genders were excluded
 		entry = computeAverages(entry)
 		result.append(entry)
-print categories
-print len(categories)
-with open('realData.csv', 'wb') as csvfile:
+
+with open('realData.csv', 'wb') as csvfile: #write results
     writer = csv.writer(csvfile, delimiter=',',
                              quoting=csv.QUOTE_MINIMAL)
     for dataEntry in result:
     	writer.writerow(dataEntry)
-count = 0
-count2 =0
+
