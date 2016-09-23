@@ -52,10 +52,6 @@ for i in range (0,len(address)):
 print "preX is"
 print preX
         
-#print my_data
-#print len(my_data)
-#print type(my_data)
-#print type(my_data[1][2])
 
 # Import the data to X_transp and Y
 X_trans=preX
@@ -166,7 +162,7 @@ np.savetxt("GoodPrediction.csv", predic_aft, delimiter=",")
 #print sum/count
 
 
-# Testing the model
+# Testing the model  --------------------------------------------------------------------------------------------------------
 print "Testing..."
 from numpy import genfromtxt
 my_TestData = genfromtxt('TestData.csv', delimiter=',')
@@ -180,12 +176,11 @@ for i in range (0,par_numTest):
         preYY_num=preYY_num+1
 
 
-print preYY_num
 preYY=np.arange(preYY_num,dtype=float)
 address_Test=np.arange(preYY_num,dtype=int)
 preXX=np.arange(preYY_num*(feature_num+1), dtype=float).reshape(preYY_num,(feature_num+1))
 
-# only search for the information of the player who has previous result
+# Only search for the information of the player who has previous result
 idx=0
 for i in range (0,preYY_num):
     global idx
@@ -209,16 +204,16 @@ for i in range (0,preYY_num):
 XX=XX_trans.transpose()
 predic_Test=np.arange(len(my_TestData),dtype=float)
 
-
 # Generate the prediction
 predic_Test = np.dot(W_new,XX)
-print predic_Test
 
-
-
+# Merging the result of players with previous results and those who don't
 predic_aft_Test=np.arange(len(my_TestData),dtype=float)
 for i in range(0,len(predic_Test)):
     predic_aft_Test[address_Test[i]]=predic_Test[i]
 
+# Presenting the final prediction 
 print "Prediction on Testing data is"
 print predic_aft_Test
+
+
