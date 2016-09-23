@@ -1,0 +1,1 @@
+To train on the 2014 data run sanatizeData.py (takes no arguments) and will creat trainingData.csv. To run the actual data for predictions run finalDataFeatures.py to create realData.csv. Project1_data.csv MUST be in the same folder for these to run without error
